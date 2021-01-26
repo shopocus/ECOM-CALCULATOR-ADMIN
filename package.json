@@ -1,7 +1,7 @@
 {
   "name": "adminpanel",
   "version": "0.1.0",
-  "homepage": "https://shopocus.github.io/Ecommerce-Admin-Panel",
+  "homepage": "https://shopocus.github.io/ECOM-CALCULATOR-ADMIN/",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.2",
