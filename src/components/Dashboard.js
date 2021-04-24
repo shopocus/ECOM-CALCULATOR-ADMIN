@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,7 +14,7 @@ import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import SideNav from "./sideNav";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import TransitionsModal from "./modal";
 
 const drawerWidth = 240;
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard(props) {
+function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -113,7 +113,15 @@ export default function Dashboard(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    async function checkToken() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        props.history.push('/');
+      } 
+    }
+    checkToken();
+  }, [props.history]);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -179,3 +187,5 @@ export default function Dashboard(props) {
     </div>
   );
 }
+
+export default withRouter(Dashboard);

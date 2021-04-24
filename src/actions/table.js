@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {
   addCommission,
   updateCommission,
@@ -20,19 +21,62 @@ import {
   updateClosingFees,
 } from "./closingfees";
 import { addFulfillmentFees, updateFulfillmentFees } from "./fulfillmentfees";
+import { addUser, deleteUser } from "./user";
+import { deleteCalculation } from "./calculation";
 
-export const setData = (platform, type) => (dispatch) => {
+export const setData = (platform, type, email) => (dispatch) => {
   let column = [];
   let editable = {};
   let actions = [];
   let url = "";
+ if(email!==undefined){
+    column = [
+    { title: "Title", field: "title" },
+    { title: "Date", field: "date" },
+    ];
+    editable = {
+      onRowDelete: (oldData) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            dispatch(deleteCalculation(oldData, platform, email));
+            resolve();
+          }, 1000);
+        }),
+    };
+    actions=[
+      {
+        icon: 'info',
+        tooltip: 'calculation',
+        onClick: (event, rowData) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            dispatch(setAlert(true, "calculation", { platform , email , title : rowData.title, date : rowData.date}));
+            resolve();
+          }, 1000);
+        }),
+      },
+      {
+        icon: ()=>(<ArrowBackIcon />),
+        tooltip: 'back',
+        isFreeAction: true,
+        onClick: (event, rowData) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            window.location = "../user"
+            resolve();
+          }, 1000);
+        }),
+      }
+    ]
+    url = process.env.REACT_APP_API_URL +"api/users/admin/show/saved/title?company="+platform+"&email="+email+"&role=Admin"
+ }
+
   if (type === "Commission") {
     column = [
       { title: "Category", field: "category", editable: "onAdd" },
       { title: "Commission", field: "commission" },
     ];
     let form = {
-      set: true,
       type: "Add",
       page: type,
       fields: ["category", "commission"],
@@ -47,7 +91,7 @@ export const setData = (platform, type) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, form));
+              dispatch(setAlert(true, "form", form));
               resolve();
             }, 1000);
           }),
@@ -76,6 +120,21 @@ export const setData = (platform, type) => (dispatch) => {
       "/admin/commission/getAll";
   }
   if (type === "Shipping") {
+    if (platform === "meesho") {
+      column = [
+        { title: "Type", field: "type", editable: "onAdd" },
+        { title: "Price", field: "price", editable: "onUpdate" }
+      ];
+      editable = {
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              dispatch(updateShipping(oldData, newData, platform));
+              resolve();
+            }, 1000);
+          }),
+      };
+    }
     if (platform === "clubFactory") {
       column = [
         { title: "Type", field: "type", editable: "onAdd" },
@@ -84,7 +143,6 @@ export const setData = (platform, type) => (dispatch) => {
         { title: "Max", field: "max" },
       ];
       let form = {
-        set: true,
         type: "Add",
         page: type,
         fields: ["type", "field", "value"],
@@ -98,7 +156,7 @@ export const setData = (platform, type) => (dispatch) => {
           onClick: (event) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                dispatch(setAlert(true, form));
+                dispatch(setAlert(true, "form", form));
                 resolve();
               }, 1000);
             }),
@@ -113,7 +171,6 @@ export const setData = (platform, type) => (dispatch) => {
         { title: "National", field: "national" },
       ];
       let form = {
-        set: true,
         type: "Add",
         page: type,
         fields: ["type", "field", "value"],
@@ -127,7 +184,7 @@ export const setData = (platform, type) => (dispatch) => {
           onClick: (event) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                dispatch(setAlert(true, form));
+                dispatch(setAlert(true,"form", form));
                 resolve();
               }, 1000);
             }),
@@ -151,7 +208,6 @@ export const setData = (platform, type) => (dispatch) => {
         { title: "National", field: "national" },
       ];
       let form = {
-        set: true,
         type: "Add",
         page: type,
         fields: [
@@ -171,7 +227,7 @@ export const setData = (platform, type) => (dispatch) => {
           onClick: (event) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                dispatch(setAlert(true, form));
+                dispatch(setAlert(true,"form", form));
                 resolve();
               }, 1000);
             }),
@@ -205,7 +261,7 @@ export const setData = (platform, type) => (dispatch) => {
       platform +
       "/admin/fixedFees/getAll";
     let form = {
-      set: true,
+
       type: "Add",
       page: type,
       fields: ["minSp", "rate"],
@@ -219,7 +275,7 @@ export const setData = (platform, type) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, form));
+              dispatch(setAlert(true,"form", form));
               resolve();
             }, 1000);
           }),
@@ -242,6 +298,46 @@ export const setData = (platform, type) => (dispatch) => {
         }),
     };
   }
+  if (type === "Information" && platform === "user") {
+    column = [
+      { title: "Name", field: "name" },
+      { title: "Email", field: "email" },
+      { title: "Mobile Number", field: "mobile_no" },
+    ];
+    url =
+      process.env.REACT_APP_API_URL +
+      "api/users/admin/read";
+    let form = {
+
+      type: "Add",
+      page: "User",
+      fields: ["name", "email", "mobile_no", "password"],
+      onSubmit: addUser,
+    };
+    actions = [
+      {
+        icon: "add",
+        tooltip: "Add User",
+        isFreeAction: true,
+        onClick: (event) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              dispatch(setAlert(true, "form" ,form));
+              resolve();
+            }, 1000);
+          }),
+      },
+    ];
+    editable = {
+      onRowDelete: (oldData) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            dispatch(deleteUser(oldData, platform));
+            resolve();
+          }, 1000);
+        }),
+    };
+  }
   if (type === "Collection Fees") {
     column = [
       { title: "Min", field: "minSp", editable: "onAdd" },
@@ -257,7 +353,6 @@ export const setData = (platform, type) => (dispatch) => {
       platform +
       "/admin/collectionFees/getAll";
     let form = {
-      set: true,
       type: "Add",
       page: type,
       fields: [
@@ -278,7 +373,7 @@ export const setData = (platform, type) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, form));
+              dispatch(setAlert(true, "form", form));
               resolve();
             }, 1000);
           }),
@@ -315,7 +410,6 @@ export const setData = (platform, type) => (dispatch) => {
       platform +
       "/admin/referral/getAll";
     let form = {
-      set: true,
       type: "Add",
       page: type,
       fields: [
@@ -335,7 +429,7 @@ export const setData = (platform, type) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, form));
+              dispatch(setAlert(true, "form", form));
               resolve();
             }, 1000);
           }),
@@ -364,7 +458,6 @@ export const setData = (platform, type) => (dispatch) => {
       { title: "Max", field: "maxSp" },
     ];
     let form = {
-      set: true,
       type: "Add",
       page: type,
       fields: ["minSp", "maxSp"],
@@ -395,7 +488,7 @@ export const setData = (platform, type) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, form));
+              dispatch(setAlert(true, "form", form));
               resolve();
             }, 1000);
           }),
@@ -429,7 +522,6 @@ export const setData = (platform, type) => (dispatch) => {
       { title: "Storing Fees", field: "storingFees" },
     ];
     let form = {
-      set: true,
       type: "Add",
       page: type,
       fields: [
@@ -455,7 +547,7 @@ export const setData = (platform, type) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, form));
+              dispatch(setAlert(true, "form", form));
               resolve();
             }, 1000);
           }),
@@ -476,7 +568,7 @@ export const setData = (platform, type) => (dispatch) => {
     headers: {
       "content-type": "application/json",
       "x-auth": localStorage.getItem("token"),
-    },
+    }
   })
     .then(async function (response) {
       if (!response.ok && parseInt(response.status) !== 401) {
@@ -489,6 +581,7 @@ export const setData = (platform, type) => (dispatch) => {
       return response.json();
     })
     .then((data) => {
+      if(email!==undefined) data = data.title
       dispatch({
         type: SET_DATA,
         payload: { column, data, editable, actions },

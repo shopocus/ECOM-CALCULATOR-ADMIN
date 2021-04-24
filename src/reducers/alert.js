@@ -2,11 +2,16 @@ import { SET_ALERT, REMOVE_ALERT } from "../actions/types";
 
 const initialState = {
   set: false,
+  type: "",
   form: {
-    set: false,
     page: "",
     type: "",
   },
+  calculation:{
+    title: "",
+    input: {},
+    output:{}
+  }
 };
 
 const alertReducer = function (state = initialState, action) {
@@ -19,8 +24,7 @@ const alertReducer = function (state = initialState, action) {
     case REMOVE_ALERT:
       return {
         ...state,
-        set: false,
-        form: initialState.form,
+        ...initialState
       };
     default:
       return state;

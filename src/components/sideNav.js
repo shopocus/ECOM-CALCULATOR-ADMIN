@@ -35,99 +35,109 @@ function getItems() {
     },
     {
       id: 2,
+      title: "User",
+      link: "/dashboard/information/user",
+    },
+    {
+      id: 3,
       title: "Meesho",
       items: [
         {
-          id: 1,
+          id: 31,
           name: "Commission",
           link: "/dashboard/commission/meesho",
+        },
+        {
+          id: 32,
+          name: "Shipping",
+          link: "/dashboard/shipping/meesho",
         },
       ],
     },
     {
-      id: 3,
+      id: 4,
       title: "Club Factory",
       items: [
         {
-          id: 1,
+          id: 41,
           name: "Commission",
           link: "/dashboard/commission/clubFactory",
         },
         {
-          id: 2,
+          id: 42,
           name: "Shipping",
           link: "/dashboard/shipping/clubFactory",
         },
       ],
     },
     {
-      id: 4,
+      id: 5,
       title: "Flipkart",
       items: [
         {
-          id: 1,
+          id: 51,
           name: "Commission",
           link: "/dashboard/commission/flipkart",
         },
         {
-          id: 2,
+          id: 52,
           name: "Shipping",
           link: "/dashboard/shipping/flipkart",
         },
         {
-          id: 3,
+          id: 53,
           name: "Fixed Fees",
           link: "/dashboard/fixedfees/flipkart",
         },
         {
-          id: 4,
+          id: 54,
           name: "Collection Fees",
           link: "/dashboard/collectionfees/flipkart",
         },
       ],
     },
     {
-      id: 4,
+      id: 6,
       title: "Amazon",
       items: [
         {
-          id: 1,
+          id: 61,
           name: "Referral",
           link: "/dashboard/referral/amazon",
         },
         {
-          id: 2,
+          id: 62,
           name: "Closing Fees",
           link: "/dashboard/closingfees/amazon",
         },
         {
-          id: 3,
+          id: 63,
           name: "Shipping",
           link: "/dashboard/shipping/amazon",
         },
       ],
     },
     {
-      id: 4,
+      id: 7,
       title: "Amazon FBA",
       items: [
         {
-          id: 1,
+          id: 71,
           name: "Referral",
           link: "/dashboard/referral/amazonFba",
         },
         {
-          id: 2,
+          id: 72,
           name: "Closing Fees",
           link: "/dashboard/closingfees/amazonFba",
         },
         {
-          id: 3,
+          id: 73,
           name: "Shipping",
           link: "/dashboard/shipping/amazonFba",
         },
         {
-          id: 4,
+          id: 74,
           name: "Fulfillment Fees",
           link: "/dashboard/fulfillmentfees/amazonFba",
         },
@@ -217,7 +227,7 @@ class NestedList extends React.Component {
                   </Link>
                 )}
                 {item.items != null ? (
-                  <div key={item.id}>
+                  <div>
                     <Collapse
                       key={items.id}
                       component="li"

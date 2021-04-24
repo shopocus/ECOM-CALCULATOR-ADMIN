@@ -9,6 +9,16 @@ function App() {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Switch>
+      <Route path="/dashboard/information/:platform/:email">
+          <Dashboard>
+            <Table type="Information" />
+          </Dashboard>
+        </Route>
+        <Route path="/dashboard/information/:platform">
+          <Dashboard>
+            <Table type="Information" />
+          </Dashboard>
+        </Route>
         <Route path="/dashboard/commission/:platform">
           <Dashboard>
             <Table type="Commission" />

@@ -51,7 +51,7 @@ export default function Form(props) {
     >
       {createUI()}
 
-      <Button type="submit" variant="contained" color="secondary">
+      <Button type="submit" variant="contained" color="primary" style={{color:"white"}}>
         Submit
       </Button>
     </form>

@@ -43,6 +43,14 @@ export const updateShipping = (oldProduct, newProduct, platform) => (
   delete value.tableData;
   let update = diff(value, newProduct);
   let body = {};
+  let method = "PUT"
+  if (platform === "meesho") {
+    body = {
+      type: oldProduct.type,
+      value: Object.values(update)[0],
+    };
+    method = "POST"
+  }
   if (platform === "clubFactory") {
     body = {
       type: oldProduct.type + "OutwardShipping",
@@ -74,7 +82,7 @@ export const updateShipping = (oldProduct, newProduct, platform) => (
       platform +
       "/admin/outwardShipping/update",
     {
-      method: "PUT",
+      method: method,
       headers: {
         "content-type": "application/json",
         "x-auth": localStorage.getItem("token"),
