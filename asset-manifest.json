@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/ECOM-CALCULATOR-ADMIN/static/css/main.ab7136cd.chunk.css",
+    "main.js": "/ECOM-CALCULATOR-ADMIN/static/js/main.04f12409.chunk.js",
+    "main.js.map": "/ECOM-CALCULATOR-ADMIN/static/js/main.04f12409.chunk.js.map",
+    "runtime-main.js": "/ECOM-CALCULATOR-ADMIN/static/js/runtime-main.d3be241d.js",
+    "runtime-main.js.map": "/ECOM-CALCULATOR-ADMIN/static/js/runtime-main.d3be241d.js.map",
+    "static/css/2.24192d93.chunk.css": "/ECOM-CALCULATOR-ADMIN/static/css/2.24192d93.chunk.css",
+    "static/js/2.891b2e51.chunk.js": "/ECOM-CALCULATOR-ADMIN/static/js/2.891b2e51.chunk.js",
+    "static/js/2.891b2e51.chunk.js.map": "/ECOM-CALCULATOR-ADMIN/static/js/2.891b2e51.chunk.js.map",
+    "static/js/3.4076e39e.chunk.js": "/ECOM-CALCULATOR-ADMIN/static/js/3.4076e39e.chunk.js",
+    "static/js/3.4076e39e.chunk.js.map": "/ECOM-CALCULATOR-ADMIN/static/js/3.4076e39e.chunk.js.map",
+    "static/js/4.1acd434b.chunk.js": "/ECOM-CALCULATOR-ADMIN/static/js/4.1acd434b.chunk.js",
+    "static/js/4.1acd434b.chunk.js.map": "/ECOM-CALCULATOR-ADMIN/static/js/4.1acd434b.chunk.js.map",
+    "static/js/5.0f5f73f5.chunk.js": "/ECOM-CALCULATOR-ADMIN/static/js/5.0f5f73f5.chunk.js",
+    "static/js/5.0f5f73f5.chunk.js.map": "/ECOM-CALCULATOR-ADMIN/static/js/5.0f5f73f5.chunk.js.map",
+    "index.html": "/ECOM-CALCULATOR-ADMIN/index.html",
+    "static/css/2.24192d93.chunk.css.map": "/ECOM-CALCULATOR-ADMIN/static/css/2.24192d93.chunk.css.map",
+    "static/css/main.ab7136cd.chunk.css.map": "/ECOM-CALCULATOR-ADMIN/static/css/main.ab7136cd.chunk.css.map",
+    "static/js/2.891b2e51.chunk.js.LICENSE.txt": "/ECOM-CALCULATOR-ADMIN/static/js/2.891b2e51.chunk.js.LICENSE.txt",
+    "static/js/3.4076e39e.chunk.js.LICENSE.txt": "/ECOM-CALCULATOR-ADMIN/static/js/3.4076e39e.chunk.js.LICENSE.txt",
+    "static/js/4.1acd434b.chunk.js.LICENSE.txt": "/ECOM-CALCULATOR-ADMIN/static/js/4.1acd434b.chunk.js.LICENSE.txt",
+    "static/js/5.0f5f73f5.chunk.js.LICENSE.txt": "/ECOM-CALCULATOR-ADMIN/static/js/5.0f5f73f5.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d3be241d.js",
+    "static/css/2.24192d93.chunk.css",
+    "static/js/2.891b2e51.chunk.js",
+    "static/css/main.ab7136cd.chunk.css",
+    "static/js/main.04f12409.chunk.js"
+  ]
+}
