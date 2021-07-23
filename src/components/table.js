@@ -3,7 +3,7 @@ import { useParams, withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { removeData, setData } from "../actions/table";
-import {  LinearProgress, Paper } from "@material-ui/core";
+import { LinearProgress, Paper } from "@material-ui/core";
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,18 +15,18 @@ import Box from '@material-ui/core/Box';
 function Table(props) {
   const classes = useStyles();
   const tableRef = React.createRef();
-  const handleClick = (event,rowData) => {
-    props.history.push('./'+event.target.innerHTML+"/"+rowData.email);
+  const handleClick = (event, rowData) => {
+    props.history.push('./' + event.target.innerHTML + "/" + rowData.email);
   };
   let params = useParams();
   const dispatch = useDispatch();
   const table = useSelector((state) => state.table);
   useEffect(() => {
     dispatch(removeData());
-    dispatch(setData(params.platform, props.type , params.email));
+    dispatch(setData(params.platform, props.type, params.email));
   }, [dispatch, params.email, params.platform, props.type]);
   useEffect(() => {
-    if (tableRef.current){
+    if (tableRef.current) {
       tableRef.current.setState({ searchText: "" });
       tableRef.current.dataManager.changeSearchText("");
       console.log(tableRef.current);
@@ -46,31 +46,34 @@ function Table(props) {
           emptyDataSourceMessage: <LinearProgress />,
         },
       }}
-      {...(params.platform==="user" && { detailPanel: rowData => {
-    return (
-        <Paper className={classes.root}>
-          <Tabs
-            onChange={event=>handleClick(event,rowData)}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-            >
-            <Tab label="meesho"/>
-            <Tab label="clubFactory" />
-            <Tab label="flipkart"/>
-            <Tab label="amazon" />
-            <Tab label="amazonFba" />
-            <Tab label="ebay" />
-            <Tab label="otherPlatform" />
-          </Tabs>
-        </Paper>
-    )
-          
-      }})}
-      
+      {...((params.platform === "user" || params.platform === "activeuser") && {
+        detailPanel: rowData => {
+          return (
+            <Paper className={classes.root}>
+              <Tabs
+                onChange={event => handleClick(event, rowData)}
+                indicatorColor="primary"
+                textColor="primary"
+                centered
+              >
+                <Tab label="meesho" />
+                <Tab label="clubFactory" />
+                <Tab label="flipkart" />
+                <Tab label="amazon" />
+                <Tab label="amazonFba" />
+                <Tab label="ebay" />
+                <Tab label="otherPlatform" />
+              </Tabs>
+            </Paper>
+          )
+
+        }
+      })}
+
       options={{
         paging: false,
         actionsColumnIndex: -1,
+        exportButton: true,
         headerStyle: {
           backgroundColor: "#F7852E",
           color: "#FFF",

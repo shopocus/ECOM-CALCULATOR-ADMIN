@@ -3,21 +3,25 @@ import { removeAlert } from "./alert";
 import { ADD_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT } from "./types";
 
 export const addCommission = (newProduct, platform) => (dispatch) => {
+  let body = {
+    category: newProduct.category,
+    commission: parseInt(newProduct.commission),
+  }
+  if (platform === "meesho") {
+    body.subcategory = newProduct.subcategory
+  }
   fetch(
     process.env.REACT_APP_API_URL +
-      "api/MPC/" +
-      platform +
-      "/admin/commission/addNew",
+    "api/MPC/" +
+    platform +
+    "/admin/commission/addNew",
     {
       method: "POST",
       headers: {
         "content-type": "application/json",
         "x-auth": localStorage.getItem("token"),
       },
-      body: JSON.stringify({
-        category: newProduct.category,
-        commission: newProduct.commission,
-      }),
+      body: JSON.stringify(body),
     }
   )
     .then(async function (response) {
@@ -43,20 +47,24 @@ export const addCommission = (newProduct, platform) => (dispatch) => {
 };
 
 export const deleteCommission = (oldProduct, platform) => (dispatch) => {
+  let body = {
+    category: oldProduct.category
+  }
+  if (platform === "meesho") {
+    body.subcategory = oldProduct.subcategory
+  }
   fetch(
     process.env.REACT_APP_API_URL +
-      "api/MPC/" +
-      platform +
-      "/admin/commission/delete",
+    "api/MPC/" +
+    platform +
+    "/admin/commission/delete",
     {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
         "x-auth": localStorage.getItem("token"),
       },
-      body: JSON.stringify({
-        category: oldProduct.category,
-      }),
+      body: JSON.stringify(body),
     }
   )
     .then(async function (response) {
@@ -83,21 +91,25 @@ export const deleteCommission = (oldProduct, platform) => (dispatch) => {
 export const updateCommission = (oldProduct, newProduct, platform) => (
   dispatch
 ) => {
+  let body = {
+    category: newProduct.category,
+    newCommission: parseInt(newProduct.commission),
+  }
+  if (platform === "meesho") {
+    body.subcategory = newProduct.subcategory
+  }
   fetch(
     process.env.REACT_APP_API_URL +
-      "api/MPC/" +
-      platform +
-      "/admin/commission/update",
+    "api/MPC/" +
+    platform +
+    "/admin/commission/update",
     {
       method: "PUT",
       headers: {
         "content-type": "application/json",
         "x-auth": localStorage.getItem("token"),
       },
-      body: JSON.stringify({
-        category: oldProduct.category,
-        newCommission: newProduct.commission,
-      }),
+      body: JSON.stringify(body),
     }
   )
     .then(async function (response) {

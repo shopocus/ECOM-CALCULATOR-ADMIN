@@ -3,6 +3,10 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -12,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 240,
+    height: 280,
     textAlign: "center",
     alignItems: "center",
     alignContent: "center",
@@ -27,9 +31,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Main() {
+
+export default function Main(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const [count, setCount] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        var response = await fetch(
+          process.env.REACT_APP_API_URL +
+          "api/users/admin/dashboard",
+          {
+            method: "GET",
+            headers: {
+              "content-type": "application/json",
+              "x-auth": localStorage.getItem("token"),
+            },
+          }
+        )
+        const json = await response.json();
+        setCount(json)
+      } catch (error) {
+        toast.error(error.message);
+      }
+
+    }
+    fetchData()
+  }, []);
 
   return (
     <Grid
@@ -40,56 +69,23 @@ export default function Main() {
       alignItems="center"
     >
       {/* Recent Deposits */}
-      <Grid item xs={12} md={4} lg={4}>
+      {count.map(e => (<Grid key={e.platform} item xs={12} md={3} lg={3}>
         <Paper className={fixedHeightPaper}>
           {" "}
           <img
             className={classes.img1}
-            src={`${process.env.PUBLIC_URL}/image/meesho@2x.png`}
+            src={`${process.env.PUBLIC_URL}/image/${e.platform}.svg`}
             alt="meesho"
           />
+          <Typography variant="h6" >
+            Calculate Count : {e.calculate_count}
+          </Typography>
+          <Typography variant="h6" >
+            Save Count : {e.save_count}
+          </Typography>
         </Paper>
-      </Grid>
-      <Grid item xs={12} md={4} lg={4}>
-        <Paper className={fixedHeightPaper}>
-          {" "}
-          <img
-            className={classes.img1}
-            src={`${process.env.PUBLIC_URL}/image/Club_Factory_Logo@2x.jpg`}
-            alt="Club Factory"
-          />
-        </Paper>
-      </Grid>
-      <Grid item xs={12} md={4} lg={4}>
-        <Paper className={fixedHeightPaper}>
-          {" "}
-          <img
-            className={classes.img}
-            src={`${process.env.PUBLIC_URL}/image/flipkart.svg`}
-            alt="Flipkart"
-          />
-        </Paper>
-      </Grid>
-      <Grid item xs={12} md={4} lg={4}>
-        <Paper className={fixedHeightPaper}>
-          {" "}
-          <img
-            className={classes.img}
-            src={`${process.env.PUBLIC_URL}/image/amazon-1.svg`}
-            alt="amazon"
-          />
-        </Paper>
-      </Grid>
-      <Grid item xs={12} md={4} lg={4}>
-        <Paper className={fixedHeightPaper}>
-          {" "}
-          <img
-            className={classes.img1}
-            src={`${process.env.PUBLIC_URL}/image/amazonfba.png`}
-            alt="amazon fba"
-          />
-        </Paper>
-      </Grid>
+      </Grid>)
+      )}
     </Grid>
   );
 }

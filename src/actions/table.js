@@ -5,7 +5,7 @@ import {
   updateCommission,
   deleteCommission,
 } from "./commission";
-import { addShipping, updateShipping } from "./shipping";
+import { updateShipping } from "./shipping";
 import { setAlert } from "./alert";
 import { SET_DATA, REMOVE_DATA } from "./types";
 import { addFixedFees, deleteFixedFees, updateFixedFees } from "./fixedfees";
@@ -21,7 +21,7 @@ import {
   updateClosingFees,
 } from "./closingfees";
 import { addFulfillmentFees, updateFulfillmentFees } from "./fulfillmentfees";
-import { addUser, deleteUser } from "./user";
+import { addUser, deleteUser, disableUser } from "./user";
 import { deleteCalculation } from "./calculation";
 
 export const setData = (platform, type, email) => (dispatch) => {
@@ -29,10 +29,10 @@ export const setData = (platform, type, email) => (dispatch) => {
   let editable = {};
   let actions = [];
   let url = "";
- if(email!==undefined){
+  if (email !== undefined) {
     column = [
-    { title: "Title", field: "title" },
-    { title: "Date", field: "date" },
+      { title: "Title", field: "title" },
+      { title: "Date", field: "date" },
     ];
     editable = {
       onRowDelete: (oldData) =>
@@ -43,38 +43,38 @@ export const setData = (platform, type, email) => (dispatch) => {
           }, 1000);
         }),
     };
-    actions=[
+    actions = [
       {
         icon: 'info',
         tooltip: 'calculation',
         onClick: (event, rowData) =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            dispatch(setAlert(true, "calculation", { platform , email , title : rowData.title, date : rowData.date}));
-            resolve();
-          }, 1000);
-        }),
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              dispatch(setAlert(true, "calculation", { platform, email, title: rowData.title, date: rowData.date }));
+              resolve();
+            }, 1000);
+          }),
       },
       {
-        icon: ()=>(<ArrowBackIcon />),
+        icon: () => (<ArrowBackIcon />),
         tooltip: 'back',
         isFreeAction: true,
         onClick: (event, rowData) =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            window.location = "../user"
-            resolve();
-          }, 1000);
-        }),
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              window.location = "../user"
+              resolve();
+            }, 1000);
+          }),
       }
     ]
-    url = process.env.REACT_APP_API_URL +"api/users/admin/show/saved/title?company="+platform+"&email="+email+"&role=Admin"
- }
+    url = process.env.REACT_APP_API_URL + "api/users/admin/show/saved/title?company=" + platform + "&email=" + email + "&role=Admin"
+  }
 
   if (type === "Commission") {
     column = [
-      { title: "Category", field: "category", editable: "onAdd" },
-      { title: "Commission", field: "commission" },
+      { title: '#', field: 'tableData.id', render: rowData => { return (<p>{rowData.tableData.id + 1}</p>) }, width: "5%", editable: "onAdd" },
+      { title: "Category", field: "category", editable: "onAdd" }
     ];
     let form = {
       type: "Add",
@@ -82,7 +82,11 @@ export const setData = (platform, type, email) => (dispatch) => {
       fields: ["category", "commission"],
       onSubmit: addCommission,
     };
-
+    if (platform === "meesho") {
+      column.push({ title: "Sub Category", field: "subcategory", editable: "onAdd" })
+      form.fields.push("subcategory")
+    }
+    column.push({ title: "Commission", field: "commission" })
     actions = [
       {
         icon: "add",
@@ -142,25 +146,25 @@ export const setData = (platform, type, email) => (dispatch) => {
         { title: "Min", field: "min" },
         { title: "Max", field: "max" },
       ];
-      let form = {
-        type: "Add",
-        page: type,
-        fields: ["type", "field", "value"],
-        onSubmit: addShipping,
-      };
+      // let form = {
+      //   type: "Add",
+      //   page: type,
+      //   fields: ["type", "field", "value"],
+      //   onSubmit: addShipping,
+      // };
       actions = [
-        {
-          icon: "add",
-          tooltip: "Add Shipping",
-          isFreeAction: true,
-          onClick: (event) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                dispatch(setAlert(true, "form", form));
-                resolve();
-              }, 1000);
-            }),
-        },
+        // {
+        //   icon: "add",
+        //   tooltip: "Add Shipping",
+        //   isFreeAction: true,
+        //   onClick: (event) =>
+        //     new Promise((resolve, reject) => {
+        //       setTimeout(() => {
+        //         dispatch(setAlert(true, "form", form));
+        //         resolve();
+        //       }, 1000);
+        //     }),
+        // },
       ];
     }
     if (platform === "flipkart") {
@@ -170,25 +174,25 @@ export const setData = (platform, type, email) => (dispatch) => {
         { title: "Zonal", field: "zonal" },
         { title: "National", field: "national" },
       ];
-      let form = {
-        type: "Add",
-        page: type,
-        fields: ["type", "field", "value"],
-        onSubmit: addShipping,
-      };
+      // let form = {
+      //   type: "Add",
+      //   page: type,
+      //   fields: ["type", "field", "value"],
+      //   onSubmit: addShipping,
+      // };
       actions = [
-        {
-          icon: "add",
-          tooltip: "Add Shipping",
-          isFreeAction: true,
-          onClick: (event) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                dispatch(setAlert(true,"form", form));
-                resolve();
-              }, 1000);
-            }),
-        },
+        // {
+        //   icon: "add",
+        //   tooltip: "Add Shipping",
+        //   isFreeAction: true,
+        //   onClick: (event) =>
+        //     new Promise((resolve, reject) => {
+        //       setTimeout(() => {
+        //         dispatch(setAlert(true, "form", form));
+        //         resolve();
+        //       }, 1000);
+        //     }),
+        // },
       ];
     }
     if (platform === "amazonFba" || platform === "amazon") {
@@ -207,31 +211,31 @@ export const setData = (platform, type, email) => (dispatch) => {
         { title: "Regional", field: "regional" },
         { title: "National", field: "national" },
       ];
-      let form = {
-        type: "Add",
-        page: type,
-        fields: [
-          "weightCategory",
-          "weightSubCategory",
-          "local",
-          "regional",
-          "national",
-        ],
-        onSubmit: addShipping,
-      };
+      // let form = {
+      //   type: "Add",
+      //   page: type,
+      //   fields: [
+      //     "weightCategory",
+      //     "weightSubCategory",
+      //     "local",
+      //     "regional",
+      //     "national",
+      //   ],
+      //   onSubmit: addShipping,
+      // };
       actions = [
-        {
-          icon: "add",
-          tooltip: "Add Shipping",
-          isFreeAction: true,
-          onClick: (event) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                dispatch(setAlert(true,"form", form));
-                resolve();
-              }, 1000);
-            }),
-        },
+        // {
+        //   icon: "add",
+        //   tooltip: "Add Shipping",
+        //   isFreeAction: true,
+        //   onClick: (event) =>
+        //     new Promise((resolve, reject) => {
+        //       setTimeout(() => {
+        //         dispatch(setAlert(true, "form", form));
+        //         resolve();
+        //       }, 1000);
+        //     }),
+        // },
       ];
     }
     editable = {
@@ -253,7 +257,7 @@ export const setData = (platform, type, email) => (dispatch) => {
     column = [
       { title: "Min", field: "minSp", editable: "onAdd" },
       { title: "Max", field: "maxSp" },
-      { title: "Range", field: "rate" },
+      { title: "Rate", field: "rate" },
     ];
     url =
       process.env.REACT_APP_API_URL +
@@ -264,7 +268,7 @@ export const setData = (platform, type, email) => (dispatch) => {
 
       type: "Add",
       page: type,
-      fields: ["minSp", "rate"],
+      fields: ["minSp", "maxSp", "rate"],
       onSubmit: addFixedFees,
     };
     actions = [
@@ -275,7 +279,7 @@ export const setData = (platform, type, email) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true,"form", form));
+              dispatch(setAlert(true, "form", form));
               resolve();
             }, 1000);
           }),
@@ -298,15 +302,38 @@ export const setData = (platform, type, email) => (dispatch) => {
         }),
     };
   }
-  if (type === "Information" && platform === "user") {
+  if (type === "Information" && (platform === "user" || platform === "activeuser")) {
     column = [
+      { title: '#', field: 'tableData.id', render: rowData => { return (<p>{rowData.tableData.id + 1}</p>) }, editable: "onAdd" },
       { title: "Name", field: "name" },
       { title: "Email", field: "email" },
       { title: "Mobile Number", field: "mobile_no" },
+      { title: "Created At", field: "created_at" },
+      { title: "Meesho Calculation Count", field: "meesho_calculate_count" },
+      { title: "Meesho Save Count", field: "meesho_save_count" },
+      { title: "Club Factory Calculation Count", field: "clubFactory_calculate_count" },
+      { title: "Club Factory Save Count", field: "clubFactory_save_count" },
+      { title: "Flipkart Calculation Count", field: "flipkart_calculate_count" },
+      { title: "Flipkart Save Count", field: "flipkart_save_count" },
+      { title: "Amazon Calculation Count", field: "amazon_calculate_count" },
+      { title: "Amazon Save Count", field: "amazon_save_count" },
+      { title: "Amazon FBA Calculation Count", field: "amazonFba_calculate_count" },
+      { title: "Amazon FBA Save Count", field: "amazonFba_save_count" },
+      { title: "EBay Calculation Count", field: "ebay_calculate_count" },
+      { title: "EBay Save Count", field: "ebay_save_count" },
+      { title: "Others Calculation Count", field: "other_calculate_count" },
+      { title: "Others Save Count", field: "other_save_count" },
+      { title: "Calculation Count", field: "total_Calculation_count" },
+      { title: "Save Count", field: "total_save_count" },
+      { title: "Is Active", field: "is_active", lookup: { true: 'Active', false: 'Inactive' }, }
     ];
     url =
       process.env.REACT_APP_API_URL +
       "api/users/admin/read";
+    if (platform === "activeuser") {
+      url = process.env.REACT_APP_API_URL +
+        "api/users/admin/stats"
+    }
     let form = {
 
       type: "Add",
@@ -322,7 +349,18 @@ export const setData = (platform, type, email) => (dispatch) => {
         onClick: (event) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              dispatch(setAlert(true, "form" ,form));
+              dispatch(setAlert(true, "form", form));
+              resolve();
+            }, 1000);
+          }),
+      },
+      {
+        icon: "delete",
+        tooltip: "Disable User",
+        onClick: (event, row) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              dispatch(disableUser(row, platform));
               resolve();
             }, 1000);
           }),
@@ -398,6 +436,7 @@ export const setData = (platform, type, email) => (dispatch) => {
   }
   if (type === "Referral") {
     column = [
+      { title: '#', field: 'tableData.id', render: rowData => { return (<p>{rowData.tableData.id + 1}</p>) }, width: "5%", editable: "onAdd" },
       { title: "Category", field: "category", editable: "onAdd" },
       { title: "Subcategory", field: "subcategory", editable: "onAdd" },
       { title: "Partition Amount", field: "partitionAmount" },
@@ -581,7 +620,7 @@ export const setData = (platform, type, email) => (dispatch) => {
       return response.json();
     })
     .then((data) => {
-      if(email!==undefined) data = data.title
+      if (email !== undefined) data = data.title
       dispatch({
         type: SET_DATA,
         payload: { column, data, editable, actions },

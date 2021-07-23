@@ -31,6 +31,8 @@ const tableReducer = function (state = initialState, action) {
         data: state.data.map((data) =>
           (data._id !== undefined &&
             data._id === action.payload.oldProduct._id) ||
+            (data.userId !== undefined &&
+              data.userId === action.payload.oldProduct.userId) ||
             (data.type !== undefined &&
               data.type === action.payload.oldProduct.type &&
               data.region === action.payload.oldProduct.region) ||

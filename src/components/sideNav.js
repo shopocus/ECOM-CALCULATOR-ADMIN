@@ -36,7 +36,18 @@ function getItems() {
     {
       id: 2,
       title: "User",
-      link: "/dashboard/information/user",
+      items: [
+        {
+          id: 21,
+          name: "All User",
+          link: "/dashboard/information/user",
+        },
+        {
+          id: 22,
+          name: "Active User",
+          link: "/dashboard/information/activeuser",
+        },
+      ],
     },
     {
       id: 3,

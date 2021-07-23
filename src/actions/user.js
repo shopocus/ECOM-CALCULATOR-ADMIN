@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { removeAlert } from "./alert";
 import { setData } from "./table";
-import { DELETE_PRODUCT } from "./types";
+import { DELETE_PRODUCT, UPDATE_PRODUCT } from "./types";
 
 export const addUser = (newProduct) => (dispatch) => {
     fetch(
@@ -61,6 +61,43 @@ export const deleteUser = (oldProduct, platform) => (dispatch) => {
                 type: DELETE_PRODUCT,
                 payload: {
                     oldProduct,
+                },
+            });
+        })
+        .catch((err) => {
+            toast.error(err.message);
+        });
+};
+
+export const disableUser = (user, platform) => (dispatch) => {
+    console.log(user)
+    fetch(
+        process.env.REACT_APP_API_URL +
+        "api/users/admin/active-inactive/" + user.userId,
+        {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+                "x-auth": localStorage.getItem("token"),
+            },
+        }
+    )
+        .then(async function (response) {
+            if (!response.ok) {
+                let data = await response.json();
+                throw new Error(data.message);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            toast.success(data.message);
+            dispatch({
+                type: UPDATE_PRODUCT,
+                payload: {
+                    newProduct: {
+                        ...user, is_active: !user.is_active
+                    },
+                    oldProduct: user,
                 },
             });
         })
